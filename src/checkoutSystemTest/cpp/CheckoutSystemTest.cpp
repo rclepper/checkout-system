@@ -24,6 +24,7 @@ TEST_F(PosTest, TestScan1Item1ItemInPriceList) {
 	double totalBeforeScan, totalAfterScan;
 
 	m_system.setItemPrice(item, itemPrice);
+
 	totalBeforeScan = m_system.getTotalPrice();
 	m_system.scanItem(item);
 	totalAfterScan = m_system.getTotalPrice();
@@ -32,19 +33,19 @@ TEST_F(PosTest, TestScan1Item1ItemInPriceList) {
 }
 
 TEST_F(PosTest, TestScan1ItemMultipleItemsInPriceList) {
-	std::string item("Lucky Charms cereal");
-	double itemPrice = 3.32;
+	std::string scannedItem("Lucky Charms cereal");
+	double scannedItemPrice = 3.32;
 	double totalBeforeScan, totalAfterScan;
 
 	m_system.setItemPrice("Pop Tarts Strawberry 16ct", 3.68);
-	m_system.setItemPrice(item, itemPrice);
+	m_system.setItemPrice(scannedItem, scannedItemPrice);
 	m_system.setItemPrice("Quaker Quick Cook Oats 18oz", 2.79);
 
 	totalBeforeScan = m_system.getTotalPrice();
-	m_system.scanItem(item);
+	m_system.scanItem(scannedItem);
 	totalAfterScan = m_system.getTotalPrice();
 
-	EXPECT_FLOAT_EQ(itemPrice, totalAfterScan - totalBeforeScan);
+	EXPECT_FLOAT_EQ(scannedItemPrice, totalAfterScan - totalBeforeScan);
 }
 
 TEST_F(PosTest, TestScanMultipleEachesItems) {
@@ -68,4 +69,21 @@ TEST_F(PosTest, TestScanMultipleEachesItems) {
 
 	EXPECT_FLOAT_EQ(scannedItem1Price + scannedItem2Price + scannedItem3Price,
 		totalAfterScans - totalBeforeScans);
+}
+
+TEST_F(PosTest, TestScan3OfSameItem) {
+	std::string scannedItem("Lucky Charms cereal");
+	double scannedItemPrice = 3.32;
+	double totalBeforeScan, totalAfterScan;
+
+	m_system.setItemPrice("Pop Tarts Strawberry 16ct", 3.68);
+	m_system.setItemPrice(scannedItem, scannedItemPrice);
+
+	totalBeforeScan = m_system.getTotalPrice();
+	m_system.scanItem(scannedItem);
+	m_system.scanItem(scannedItem);
+	m_system.scanItem(scannedItem);
+	totalAfterScan = m_system.getTotalPrice();
+
+	EXPECT_FLOAT_EQ(scannedItemPrice * 3, totalAfterScan - totalBeforeScan);
 }
