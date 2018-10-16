@@ -2,27 +2,32 @@
 #include <string>
 #include <unordered_map>
 
-// #if defined(DLL_EXPORT)
-// #define DECLSPEC __declspec(dllexport)
-// #else
-// #define DECLSPEC
-// #endif
+namespace pos
+{
 
-//class DECLSPEC PointOfSaleSystem
+enum ScanResult
+{
+	Found,
+	NotFound
+};
+
 class PointOfSaleSystem
 {
 public:
 	PointOfSaleSystem();
 	~PointOfSaleSystem();
 
+	ScanResult scanItem(std::string item);
+
 	double getTotalPrice();
 
 private:
 
+	std::unordered_map<std::string, double> m_priceList; // item, price
 	double m_totalPrice;
 };
 
-
+} // namespace pos
 
 
 
