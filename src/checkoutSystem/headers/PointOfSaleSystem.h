@@ -14,11 +14,12 @@ enum ScanResult
 class PointOfSaleSystem
 {
 public:
-	PointOfSaleSystem();
-	~PointOfSaleSystem();
+	PointOfSaleSystem() : m_priceList(0), m_totalPrice(0.0) {}
+	~PointOfSaleSystem() {}
+
+	void setItemPrice(std::string item, double itemPrice);
 
 	ScanResult scanItem(std::string item);
-
 	double getTotalPrice();
 
 private:

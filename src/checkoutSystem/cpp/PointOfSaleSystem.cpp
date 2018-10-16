@@ -3,12 +3,11 @@
 namespace pos
 {
 
-PointOfSaleSystem::PointOfSaleSystem() : m_priceList(0), m_totalPrice(0.0)
+// setItemPrice adds or updates the price of an item in the price list
+// TODO: decide: do we want separate functions for add and update?
+void PointOfSaleSystem::setItemPrice(std::string item, double itemPrice)
 {
-}
-
-PointOfSaleSystem::~PointOfSaleSystem()
-{
+	m_priceList.insert( {item, itemPrice} );
 }
 
 // scanItem scans item and adds its price to the total; returns whether or not item was found in price list
