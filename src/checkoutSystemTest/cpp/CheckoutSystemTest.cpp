@@ -9,7 +9,7 @@ protected:
 };
 
 TEST_F(PosTest, TestGetInitialTotalPrice) {
-	EXPECT_FLOAT_EQ(m_system.getTotalPrice(), 0.0);
+	EXPECT_DOUBLE_EQ(m_system.getTotalPrice(), 0.0);
 }
 
 TEST_F(PosTest, TestScanItemPriceListEmpty) {
@@ -29,7 +29,7 @@ TEST_F(PosTest, TestScan1Item1ItemInPriceList) {
 	m_system.scanItem(item);
 	totalAfterScan = m_system.getTotalPrice();
 
-	EXPECT_FLOAT_EQ(itemPrice, totalAfterScan - totalBeforeScan);
+	EXPECT_DOUBLE_EQ(itemPrice, totalAfterScan - totalBeforeScan);
 }
 
 TEST_F(PosTest, TestScan1ItemMultipleItemsInPriceList) {
@@ -45,7 +45,7 @@ TEST_F(PosTest, TestScan1ItemMultipleItemsInPriceList) {
 	m_system.scanItem(scannedItem);
 	totalAfterScan = m_system.getTotalPrice();
 
-	EXPECT_FLOAT_EQ(scannedItemPrice, totalAfterScan - totalBeforeScan);
+	EXPECT_DOUBLE_EQ(scannedItemPrice, totalAfterScan - totalBeforeScan);
 }
 
 TEST_F(PosTest, TestScanMultipleEachesItems) {
@@ -67,7 +67,7 @@ TEST_F(PosTest, TestScanMultipleEachesItems) {
 	m_system.scanItem(scannedItem3);
 	totalAfterScans = m_system.getTotalPrice();
 
-	EXPECT_FLOAT_EQ(scannedItem1Price + scannedItem2Price + scannedItem3Price,
+	EXPECT_DOUBLE_EQ(scannedItem1Price + scannedItem2Price + scannedItem3Price,
 		totalAfterScans - totalBeforeScans);
 }
 
@@ -85,5 +85,22 @@ TEST_F(PosTest, TestScan3OfSameItem) {
 	m_system.scanItem(scannedItem);
 	totalAfterScan = m_system.getTotalPrice();
 
-	EXPECT_FLOAT_EQ(scannedItemPrice * 3, totalAfterScan - totalBeforeScan);
+	EXPECT_DOUBLE_EQ(scannedItemPrice * 3, totalAfterScan - totalBeforeScan);
+}
+
+TEST_F(PosTest, TestScanWeightedItem) {
+	std::string scannedItem("Ground Beef");
+	double scannedPerLbPrice = 1.99;
+	double scannedWeight = 2.5;
+	double totalBeforeScan, totalAfterScan;
+
+	m_system.setItemPrice("Pop Tarts Strawberry 16ct", 3.68);
+	m_system.setItemPrice(scannedItem, scannedPerLbPrice);
+	m_system.setItemPrice("Quaker Quick Cook Oats 18oz", 2.79);
+
+	totalBeforeScan = m_system.getTotalPrice();
+	m_system.scanItem(scannedItem, scannedWeight);
+	totalAfterScan = m_system.getTotalPrice();
+
+	EXPECT_DOUBLE_EQ(scannedPerLbPrice * scannedWeight, totalAfterScan - totalBeforeScan);
 }
