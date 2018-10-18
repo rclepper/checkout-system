@@ -18,11 +18,11 @@ Tool chain:
 
 To build and run Checkout System tests on Linux:
 ------------------------------------------------
-'''
+```
 cd checkout-system
 gradle installGoogleTest  # downloads and installs googletest package (only need to run once, though will redo if done repeatedly)
 gradle build              # builds and runs unit tests
-'''
+```
 
 
 Design Notes:
